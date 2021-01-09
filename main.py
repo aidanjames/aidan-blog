@@ -16,7 +16,6 @@ app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-this = "Have I saved it?"
 
 # CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
@@ -163,7 +162,7 @@ def show_post(post_id):
     form = CommentForm()
     if form.validate_on_submit():
         if not current_user.is_authenticated:
-            flash("You need to log in to comment. Soz.")
+            flash("You need to log in to comment.")
             return redirect(url_for("login"))
         new_comment = Comment()
         new_comment.text = form.comment.data
