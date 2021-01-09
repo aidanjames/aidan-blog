@@ -20,7 +20,7 @@ class CreateUserForm(FlaskForm):
 
 
 class LogInForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired(), Email()])
     password = PasswordField("Password", validators=[DataRequired()])
     submit = SubmitField("Log in")
 
