@@ -9,22 +9,25 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from forms import CreatePostForm, CreateUserForm, LogInForm, CommentForm
 from flask_gravatar import Gravatar
 from functools import wraps
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
-##CONNECT TO DB
+this = "Have I saved it?"
+
+# CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-##LOGIN MANAGER
+# LOGIN MANAGER
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-##GRAVITAR
+# GRAVITAR
 gravatar = Gravatar(app,
                     size=100,
                     rating='g',
@@ -34,7 +37,8 @@ gravatar = Gravatar(app,
                     use_ssl=False,
                     base_url=None)
 
-##CONFIGURE TABLES
+
+# CONFIGURE TABLES
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -75,7 +79,7 @@ class Comment(db.Model):
     blog = relationship("BlogPost", back_populates="blog_comments")
 
 
-db.create_all()
+# db.create_all()
 
 
 @login_manager.user_loader
