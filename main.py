@@ -12,14 +12,13 @@ from functools import wraps
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
-# app.config['SECRET_KEY'] = "delete-this-ajpajpajpajp"
+app.config['SECRET_KEY'] = os.getenv("SECRET_KEY", "sqlite:///blog.db")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
