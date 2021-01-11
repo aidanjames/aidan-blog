@@ -5,11 +5,12 @@ from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import CreatePostForm, CreateUserForm, LogInForm, CommentForm
+from flask_login import UserMixin, login_user, LoginManager, current_user, logout_user
+from forms import CreatePostForm, CreateUserForm, LogInForm, CommentForm, EmailContactForm
 from flask_gravatar import Gravatar
 from functools import wraps
 import os
+import smtplib
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -180,9 +181,26 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    form = EmailContactForm()
+    if form.validate_on_submit():
+        if not current_user.is_authenticated:
+            flash("You need to log in to send a contact request.")
+            return redirect(url_for("login"))
+        name = form.name.data
+        email = form.email.data
+        phone = form.phone.data
+        message = form.message.data
+        message = f"Subject: New contact request\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
+        with smtplib.SMTP("smtp.gmail.com") as connection:
+            connection.starttls()
+            connection.login(user=os.getenv("MY_EMAIL"), password=os.getenv("EMAIL_PASSWORD"))
+            connection.sendmail(from_addr=os.getenv("MY_EMAIL"),
+                                to_addrs=os.getenv("MY_EMAIL"),
+                                msg=message)
+        return render_template("contact.html", form=form, message_sent=True)
+    return render_template("contact.html", form=form, message_sent=False)
 
 
 @app.route("/new-post", methods=["GET", "POST"])
