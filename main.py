@@ -193,7 +193,7 @@ def contact():
         phone = form.phone.data
         message = form.message.data
         message = f"Subject: New contact request\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
-        with smtplib.SMTP("smtp.gmail.com") as connection:
+        with smtplib.SMTP(os.getenv("SMTP_SERVER")) as connection:
             connection.starttls()
             connection.login(user=os.getenv("MY_EMAIL"), password=os.getenv("EMAIL_PASSWORD"))
             connection.sendmail(from_addr=os.getenv("MY_EMAIL"),
