@@ -37,6 +37,15 @@
         </div>
 
         <!--           Comments Area -->
+
+        <h1>Comments 🗣</h1>
+
+        {% if not current_user.is_authenticated %}
+
+        <p><a href="{{ url_for('login') }}">Log in</a> to add a comment.</p>
+
+        {% else %}
+
         {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
         <div class="col-lg-8 col-md-10 mx-auto comment">
           {% for comment in post.blog_comments %}
@@ -53,7 +62,7 @@
           </ul>
           {% endfor %}
         </div>
-
+      {% endif %}
       </div>
     </div>
   </div>

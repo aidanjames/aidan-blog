@@ -27,7 +27,7 @@ class LogInForm(FlaskForm):
 
 
 class CommentForm(FlaskForm):
-    comment = StringField("Comment", widget=TextArea(), validators=[DataRequired()])
+    comment = StringField("", widget=TextArea(), validators=[DataRequired()], render_kw={"placeholder": "Your comment"})
     submit = SubmitField("Add comment")
 
 
