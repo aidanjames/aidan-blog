@@ -42,11 +42,14 @@
 
         {% if not current_user.is_authenticated %}
 
-        <p><a href="{{ url_for('login') }}">Log in</a> to add a comment.</p>
+          <p><a href="{{ url_for('login') }}">Log in</a> to add a comment.</p>
 
         {% else %}
 
-        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+          {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+        {% endif %}
+
         <div class="col-lg-8 col-md-10 mx-auto comment">
           {% for comment in post.blog_comments %}
           <ul class="commentList">
@@ -62,7 +65,6 @@
           </ul>
           {% endfor %}
         </div>
-      {% endif %}
       </div>
     </div>
   </div>
