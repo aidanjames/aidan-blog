@@ -42,11 +42,11 @@
 
         {% if not current_user.is_authenticated %}
 
-          <p><a href="{{ url_for('login') }}">Log in</a> to add a comment.</p>
+        <p><a href="{{ url_for('login') }}">Log in</a> to add a comment.</p>
 
         {% else %}
 
-          {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
 
         {% endif %}
 
@@ -59,6 +59,9 @@
               </div>
               <div class="commentText">
                 <p>{{comment.text|safe}}</p>
+                {% if current_user.id == comment.commenter.id %}
+                  <a href="{{url_for('delete_comment', comment_id=comment.id) }}">✘</a>
+                {% endif %}
                 <span class="date sub-text">{{comment.commenter.name}}</span>
               </div>
             </li>

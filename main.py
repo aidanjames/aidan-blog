@@ -248,9 +248,22 @@ def edit_post(post_id):
 @admin_only
 def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)
+    # TODO Delete comments associated with post
+    comments_to_delete = Comment.query.filter_by(blog_id=post_id)
+    for comment in comments_to_delete:
+        db.session.delete(comment)
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for('get_all_posts'))
+
+
+@app.route("/delete-comment/<int:comment_id>")
+def delete_comment(comment_id):
+    comment_to_delete = Comment.query.get(comment_id)
+    if current_user.id == comment_to_delete.commenter.id:
+        db.session.delete(comment_to_delete)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
 
 
 if __name__ == "__main__":
