@@ -11,6 +11,7 @@ from flask_gravatar import Gravatar
 from functools import wraps
 import os
 import smtplib
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
@@ -248,7 +249,6 @@ def edit_post(post_id):
 @admin_only
 def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)
-    # TODO Delete comments associated with post
     comments_to_delete = Comment.query.filter_by(blog_id=post_id)
     for comment in comments_to_delete:
         db.session.delete(comment)
@@ -257,6 +257,7 @@ def delete_post(post_id):
     return redirect(url_for('get_all_posts'))
 
 
+# TODO Return to post page on deleting comment.
 @app.route("/delete-comment/<int:comment_id>")
 def delete_comment(comment_id):
     comment_to_delete = Comment.query.get(comment_id)
@@ -264,6 +265,11 @@ def delete_comment(comment_id):
         db.session.delete(comment_to_delete)
         db.session.commit()
         return redirect(url_for('get_all_posts'))
+
+
+@app.context_processor
+def inject_now():
+    return {'now': datetime.utcnow()}
 
 
 if __name__ == "__main__":
