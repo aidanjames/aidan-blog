@@ -257,14 +257,14 @@ def delete_post(post_id):
     return redirect(url_for('get_all_posts'))
 
 
-# TODO Return to post page on deleting comment.
 @app.route("/delete-comment/<int:comment_id>")
 def delete_comment(comment_id):
     comment_to_delete = Comment.query.get(comment_id)
+    related_post = comment_to_delete.blog_id
     if current_user.id == comment_to_delete.commenter.id:
         db.session.delete(comment_to_delete)
         db.session.commit()
-        return redirect(url_for('get_all_posts'))
+        return redirect(url_for("show_post", post_id=related_post))
 
 
 @app.context_processor
