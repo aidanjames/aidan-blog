@@ -27,6 +27,7 @@
       {% if not message_sent %}
       <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as
         possible!</p>
+<!--      TODO Consider converting this to a not so quick form to allow pre-population of user info -->
       {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
       {% else %}
       <p>Thanks for reaching out. I'll be in touch!</p>

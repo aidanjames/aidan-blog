@@ -71,6 +71,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, nullable=False)
+    date = db.Column(db.String(250), nullable=False)
 
     # Relationships
     commenter_id = db.Column(db.Integer, db.ForeignKey("users.id"))
@@ -170,6 +171,8 @@ def show_post(post_id):
         new_comment.text = form.comment.data
         new_comment.commenter = current_user
         new_comment.blog = requested_post
+        new_comment.date = date.today().strftime("%B %d, %Y")
+
 
         db.session.add(new_comment)
         db.session.commit()
