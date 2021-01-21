@@ -188,6 +188,9 @@ def about():
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     form = EmailContactForm()
+    # TODO pre-populate form data with current user info, if they are signed on. If not they can still use contact form.
+    form.name.data = "Aidan James"
+
     if form.validate_on_submit():
         if not current_user.is_authenticated:
             flash("You need to log in to send a contact request.")
