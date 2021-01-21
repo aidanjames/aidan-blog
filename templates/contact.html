@@ -24,11 +24,42 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
+
       {% if not message_sent %}
       <p>Want to get in touch? Fill out the form below to send me a message and I will get back to you as soon as
         possible!</p>
-<!--      TODO Consider converting this to a not so quick form to allow pre-population of user info -->
-      {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+      <!--      TODO Consider converting this to a not so quick form to allow pre-population of user info -->
+
+      <form method="POST" action="{{ url_for('login') }}" novalidate>
+        {{ form.csrf_token }}
+        <p>
+          {{ form.name.label }} <br> {{ form.name(size=30) }}
+          {% for error in form.name.errors %}
+          <span style="color:red">{{ error }}</span>
+          {% endfor %}
+        </p>
+        <p>
+          {{ form.email.label }} <br> {{ form.email(size=30) }}
+          {% for error in form.email.errors %}
+          <span style="color:red">{{ error }}</span>
+          {% endfor %}
+        </p>
+        <p>
+          {{ form.phone.label }} <br> {{ form.phone(size=30) }}
+          {% for error in form.phone.errors %}
+          <span style="color:red">{{ error }}</span>
+          {% endfor %}
+        </p>
+        <p>
+          {{ form.message.label }} <br> {{ form.message(size=250) }}
+          {% for error in form.message.errors %}
+          <span style="color:red">{{ error }}</span>
+          {% endfor %}
+        </p>
+        {{ form.submit }}
+      </form>
+
+<!--      {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}-->
       {% else %}
       <p>Thanks for reaching out. I'll be in touch!</p>
       {% endif %}
