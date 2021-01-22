@@ -34,6 +34,6 @@ class CommentForm(FlaskForm):
 class EmailContactForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     email = StringField("Email Address", validators=[DataRequired(), Email()])
-    phone = StringField("Phone Number", validators=[DataRequired()])
+    phone = StringField("Phone Number")
     message = StringField("Message", widget=TextArea(), validators=[DataRequired()])
     submit = SubmitField("Send")
