@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, abort
+from flask import Flask, render_template, redirect, url_for, flash, abort, jsonify
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
@@ -274,6 +274,16 @@ def delete_comment(comment_id):
 @app.context_processor
 def inject_now():
     return {'now': datetime.utcnow()}
+
+
+# RESTful API
+@app.route("/random")
+def random():
+    my_dict = {
+        "es": "Hola",
+        "en": "Hello"
+    }
+    return jsonify(response=my_dict)
 
 
 if __name__ == "__main__":
